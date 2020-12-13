@@ -168,8 +168,12 @@ const doRectanglesOverlap = (/* rect1, rect2 */) => {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const pos = (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2;
+  if (pos < circle.radius ** 2) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -184,8 +188,14 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    const char = str[i];
+    if (str.indexOf(char) === i && str.indexOf(char, i + 1) === -1) {
+      return char;
+    }
+  }
+  return null;
 }
 
 
@@ -211,8 +221,11 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const openbraket = isStartIncluded ? '[' : '(';
+  const closebraket = isEndIncluded ? ']' : ')';
+  const arr = [a, b].sort();
+  return `${openbraket}${arr.join(', ')}${closebraket}`;
 }
 
 
@@ -228,8 +241,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').map((elem) => elem.split('').reverse().join('')).reverse().join('');
 }
 
 
@@ -245,8 +258,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseInt(num.toString().split('').reverse().join(''), 10);
 }
 
 
@@ -270,10 +283,33 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
-}
+function isCreditCardNumber(number) {
+  const sumOdd = number.toString().split('').reverse().filter((item, index) => {
+    if (index % 2 === 0) {
+      return item;
+    }
+    return false;
+  })
+    .reduce((acc, item) => acc + parseInt(item, 10), 0);
+  const multEven = number.toString().split('').reverse().filter((item, index) => {
+    if (!(index % 2 === 0)) {
+      return item;
+    }
+    return false;
+  })
+    .map((item) => parseInt(item, 10) * 2);
+  const sumEven = multEven.map((elem) => {
+    if (elem > 9) {
+      return elem - 9;
+    }
+    return elem;
+  }).reduce((acc, item) => acc + parseInt(item, 10), 0);
+  if ((sumOdd + sumEven) % 10 === 0) {
+    return true;
+  }
 
+  return false;
+}
 /**
  * Returns the digital root of integer:
  *   step1 : find sum of all digits
@@ -288,8 +324,16 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = Array.from(num.toString()).map(Number);
+  let sum = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    sum += arr[i];
+  }
+  if (sum < 10) {
+    return sum;
+  }
+  return getDigitalRoot(sum);
 }
 
 
@@ -314,7 +358,7 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
+function isBracketsBalanced(/* sum */) {
   throw new Error('Not implemented');
 }
 
